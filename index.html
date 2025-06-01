@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>꿈공방 회의실 - AI 도구 활용 세미나</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #4a5568;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .meeting-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .info-card {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            font-weight: 600;
+            border-bottom: 3px solid #4299e1;
+            padding-bottom: 10px;
+        }
+        
+        .tool-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .tool-list li {
+            background: linear-gradient(45deg, #4299e1, #3182ce);
+            color: white;
+            margin: 8px 0;
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+        }
+        
+        .tool-list li:hover {
+            transform: scale(1.05);
+        }
+        
+        .workflow {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .workflow h2 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+        
+        .workflow-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .step::after {
+            content: '→';
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            color: #4299e1;
+            font-weight: bold;
+        }
+        
+        .step:last-child::after {
+            display: none;
+        }
+        
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+            box-shadow: 0 10px 20px rgba(72, 187, 120, 0.3);
+        }
+        
+        .step h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .key-insights {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .insight-card {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .insight-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+        }
+        
+        .quote {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+        
+        .quote::before {
+            content: '"';
+            font-size: 4em;
+            color: #4299e1;
+            position: absolute;
+            top: 10px;
+            left: 30px;
+            opacity: 0.3;
+        }
+        
+        .quote p {
+            font-size: 1.3em;
+            font-style: italic;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .quote-author {
+            color: #4a5568;
+            font-weight: 600;
+        }
+        
+        .participants {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .participant {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            min-width: 200px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .participant-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #9f7aea, #805ad5);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .workflow-steps {
+                flex-direction: column;
+            }
+            
+            .step::after {
+                display: none;
+            }
+            
+            .participants {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎯 AI 도구 활용 세미나</h1>
+            <p style="font-size: 1.1em; color: #666; margin-top: 10px;">꿈공방 회의실에서 함께하는 AI 혁신의 시간</p>
+            
+            <div class="meeting-info">
+                <div class="info-card">
+                    📅 2024년 12월
+                </div>
+                <div class="info-card">
+                    🏢 꿈공방 회의실
+                </div>
+                <div class="info-card">
+                    👥 AI 전문가들과 함께
+                </div>
+                <div class="info-card">
+                    🚀 실무 중심 교육
+                </div>
+            </div>
+        </header>
+
+        <div class="content-grid">
+            <div class="card">
+                <h3>🤖 핵심 AI 도구들</h3>
+                <ul class="tool-list">
+                    <li>ChatGPT - 텍스트 생성 및 대화</li>
+                    <li>Claude - 고급 추론 및 분석</li>
+                    <li>Cursor - AI 코딩 어시스턴트</li>
+                    <li>GitHub Copilot - 코드 자동완성</li>
+                    <li>Midjourney - AI 이미지 생성</li>
+                    <li>NotebookLM - 문서 요약 및 분석</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>💡 실무 활용 영역</h3>
+                <ul class="tool-list">
+                    <li>콘텐츠 제작 및 편집</li>
+                    <li>프로그래밍 및 개발</li>
+                    <li>데이터 분석 및 시각화</li>
+                    <li>업무 자동화</li>
+                    <li>창의적 디자인</li>
+                    <li>학습 및 연구</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>🎯 세미나 목표</h3>
+                <ul class="tool-list">
+                    <li>AI 도구 실습 경험</li>
+                    <li>업무 효율성 극대화</li>
+                    <li>창의적 문제 해결</li>
+                    <li>미래 역량 강화</li>
+                    <li>네트워킹 및 협업</li>
+                    <li>실무 적용 방안 모색</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>📚 학습 자료</h3>
+                <ul class="tool-list">
+                    <li>실습용 템플릿 제공</li>
+                    <li>베스트 프랙티스 가이드</li>
+                    <li>프롬프트 엔지니어링</li>
+                    <li>케이스 스터디</li>
+                    <li>질의응답 세션</li>
+                    <li>후속 지원 방안</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="workflow">
+            <h2>🚀 AI 활용 워크플로우</h2>
+            <div class="workflow-steps">
+                <div class="step">
+                    <div class="step-icon">1️⃣</div>
+                    <h4>문제 정의</h4>
+                    <p>해결하고자 하는 과제를 명확히 정의하고 AI 도구 선택</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">2️⃣</div>
+                    <h4>프롬프트 설계</h4>
+                    <p>효과적인 프롬프트 작성으로 원하는 결과 도출</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">3️⃣</div>
+                    <h4>결과 검토</h4>
+                    <p>AI 생성 결과를 검토하고 필요시 수정 및 개선</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">4️⃣</div>
+                    <h4>실무 적용</h4>
+                    <p>최종 결과물을 실무에 적용하고 피드백 수집</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="key-insights">
+            <h2 style="text-align: center; color: #2d3748; margin-bottom: 25px;">✨ 주요 인사이트</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <h4 style="margin-bottom: 15px;">🎨 창의성 증폭</h4>
+                    <p>AI는 창의성을 대체하는 것이 아니라 증폭시키는 도구입니다. 인간의 아이디어와 AI의 실행력이 만나 혁신적인 결과를 만들어냅니다.</p>
+                </div>
+                <div class="insight-card">
+                    <h4 style="margin-bottom: 15px;">⚡ 효율성 혁명</h4>
+                    <p>반복적인 작업을 AI에게 맡기고, 우리는 더 전략적이고 창의적인 업무에 집중할 수 있습니다. 시간 절약은 곧 기회 창출입니다.</p>
+                </div>
+                <div class="insight-card">
+                    <h4 style="margin-bottom: 15px;">🔄 지속적 학습</h4>
+                    <p>AI 기술은 빠르게 발전하므로 지속적인 학습과 실험이 필요합니다. 오늘 배운 것이 내일의 경쟁력이 됩니다.</p>
+                </div>
+                <div class="insight-card">
+                    <h4 style="margin-bottom: 15px;">🤝 인간-AI 협업</h4>
+                    <p>최고의 결과는 인간과 AI가 각자의 강점을 살려 협업할 때 나타납니다. AI는 도구이며, 인간의 판단력이 핵심입니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quote">
+            <p>"AI는 마법이 아니라 도구입니다. 올바른 질문을 하고, 적절한 도구를 선택하며, 결과를 현명하게 활용하는 것이 핵심입니다."</p>
+            <div class="quote-author">- AI 전문가 -</div>
+        </div>
+
+        <div class="participants">
+            <div class="participant">
+                <div class="participant-avatar">👨‍💼</div>
+                <h4>비즈니스 리더</h4>
+                <p>AI로 업무 혁신을 주도하는 리더들</p>
+            </div>
+            <div class="participant">
+                <div class="participant-avatar">👩‍💻</div>
+                <h4>개발자</h4>
+                <p>AI 코딩 도구로 생산성을 높이는 개발자들</p>
+            </div>
+            <div class="participant">
+                <div class="participant-avatar">🎨</div>
+                <h4>크리에이터</h4>
+                <p>AI로 창의적 작업을 확장하는 아티스트들</p>
+            </div>
+            <div class="participant">
+                <div class="participant-avatar">📊</div>
+                <h4>데이터 분석가</h4>
+                <p>AI로 인사이트를 발굴하는 분석 전문가들</p>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <h3 style="color: #2d3748; margin-bottom: 15px;">🎉 함께 만들어가는 AI의 미래</h3>
+            <p style="color: #666; font-size: 1.1em;">꿈공방 회의실에서 시작된 AI 여정이 여러분의 일상과 업무를 혁신하는 출발점이 되기를 바랍니다.</p>
+            <p style="color: #4299e1; font-weight: 600; margin-top: 20px;">✨ 지금이 AI와 함께 성장할 최적의 시기입니다! ✨</p>
+        </footer>
+    </div>
+</body>
+</html>
